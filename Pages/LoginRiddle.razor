@@ -1,5 +1,4 @@
 @using static Blazor_gh.Pages.Home
-@inject ILocalStorageService _localstorage;
 @inject NavigationManager NavManager;
 
 <div class="d-flex flex-column min-vh-100 min-vw-100">
@@ -42,7 +41,7 @@
         if (_userInput.TrimEnd().ToLower() == "event")
         {
             //_localstorage.SetItemAsync("Mode", Mode.HouseRiddle);
-            NavManager.NavigateTo("/", true);
+            NavManager.NavigateTo("/");
         }
         else
         {
