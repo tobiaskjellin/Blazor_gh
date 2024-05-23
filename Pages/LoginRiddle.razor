@@ -1,0 +1,54 @@
+﻿@using static Blazor_gh.Pages.Home
+@inject ILocalStorageService _localstorage;
+@inject NavigationManager NavManager;
+
+<div class="d-flex flex-column min-vh-100 min-vw-100">
+    <div class="d-flex flex-grow-1 justify-content-center align-items-center">
+        <div class="container d-flex p-2">
+            <div class="col-4"></div>
+            <div class="col-4">
+                <div class="row">
+                    <span>Ange Lösenord</span>
+                </div>
+                <div class="row my-2">
+                    <InputText @bind-Value="_userInput"></InputText>
+                </div>
+                <div class="row my-2">
+                    <button @onclick="LogIn">Logga in</button>
+                </div>
+                <div class="row my-2">
+                    @if (_showError)
+                    {
+                        <span style="color:red">Fel lösenord!</span>
+                    }
+                    else
+                    {
+                        <span>&nbsp</span>
+                    }
+                </div>
+            </div>
+            <div class="col-4"></div>
+        </div>
+    </div>
+</div>
+
+@code {
+    private bool _isLoggedIn = false;
+    private bool _showError = false;
+    private string _userInput = "";
+
+    private void LogIn()
+    {
+        _showError = false;
+        if (_userInput.TrimEnd().ToLower() == "event")
+        {
+            _isLoggedIn = true;
+            _localstorage.SetItemAsync("Mode", Mode.HouseRiddle);
+            NavManager.NavigateTo("/", true);
+        }
+        else
+        {
+            _showError = true;
+        }
+    }
+}

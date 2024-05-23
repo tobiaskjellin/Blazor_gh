@@ -1,7 +1,38 @@
 ﻿@page "/"
+@inject ILocalStorageService _localstorage;
 
-<PageTitle>Home</PageTitle>
+<PageTitle>Kaj 70 år</PageTitle>
 
-<h1>Hello, world!</h1>
+<div>
+    @if (_mode == Mode.LoginRiddle)
+    {
+        <LoginRiddle></LoginRiddle>
+    }
+    else if (_mode == Mode.HouseRiddle)
+    {
+        <HouseRiddle></HouseRiddle>
+    }
+    else
+    {
+        <p>Done!</p>
+    }
+</div>
 
-Welcome to your new app.
+@code {
+    public enum Mode { LoginRiddle, HouseRiddle, NextRiddle }
+    private Mode _mode = Mode.LoginRiddle;
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender)
+        {
+            var mode = await _localstorage.GetItemAsync<Mode?>("Mode");
+            if (mode != null)
+            {
+                _mode = mode.Value;
+            }
+
+            StateHasChanged();
+        }
+    }
+}

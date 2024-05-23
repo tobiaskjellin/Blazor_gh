@@ -1,0 +1,221 @@
+﻿@inject ILocalStorageService _localstorage;
+
+<div class="container py-3 my-3">
+    <h1>Vem håller på Öster?</h1>
+    <p>
+        Det finns fem hus i olika färg bredvid varandra.<br />
+        I varje hus bor en familjemedlem till dig, varje person har en unik favoritdryck, favoritdjur och favoritlag.<br />
+        Använd papper och penna eller fälten nedan för att svara på frågan:<br />
+        <strong>Vem håller på Öster?</strong>
+    </p>
+
+    <ul>
+        <li>Mamma bor i det röda huset.</li>
+        <li>Julia håller på Malmö FF.</li>
+        <li>Jennie dricker te.</li>
+        <li>Det gröna huset är precis till vänster om det vita huset.</li>
+        <li>Ägaren av det gröna huset dricker kaffe.</li>
+        <li>Personen som har fiskar håller på Halmstad.</li>
+        <li>Ägaren av det gula huset har häst.</li>
+        <li>Den som bor i huset i mitten dricker mjölk.</li>
+        <li>Pontus bor i det första huset.</li>
+        <li>Den som har hund bor bredvid den som håller på Hammarby.</li>
+        <li>Den som håller på Västerås bor bredvid den som har häst.</li>
+        <li>Den som har katt dricker öl.</li>
+        <li>Tobbe har en kanin.</li>
+        <li>Pontus bor bredvid det blå huset.</li>
+        <li>Den som har hund har en granne som dricker vatten.</li>
+    </ul>
+
+    <div class="container">
+        <div class="row">
+            @foreach (var house in Houses)
+            {
+                <div class="col-md" style="margin:3px">
+                    <div class="row">
+                        <strong><span>@house.Name</span></strong>
+                    </div>
+                    <div class="row my-2">
+                        <InputSelect ValueChanged="@((string color) => OnColorChange(color, house))" Value="@house.Color"
+                                     ValueExpression="@(() =>  @house.Color)">
+                            <option value="">Välj färg</option>
+                            @foreach (var color in Colors)
+                            {
+                                <option value="@color">@color</option>
+                            }
+                        </InputSelect>
+                    </div>
+                    <div class="row my-2">
+                        <InputSelect ValueChanged="@((string person) => OnPersonChange(person, house))" Value="@house.Person"
+                                     ValueExpression="@(() =>  @house.Person)">
+                            <option value="">Välj person</option>
+                            @foreach (var person in Persons)
+                            {
+                                <option value="@person">@person</option>
+                            }
+                        </InputSelect>
+                    </div>
+                    <div class="row my-2">
+                        <InputSelect ValueChanged="@((string drink) => OnDrinkChange(drink, house))" Value="@house.Drink"
+                                     ValueExpression="@(() =>  @house.Drink)">
+                            <option value="">Välj dryck</option>
+                            @foreach (var drink in Drinks)
+                            {
+                                <option value="@drink">@drink</option>
+                            }
+                        </InputSelect>
+                    </div>
+                    <div class="row my-2">
+                        <InputSelect ValueChanged="@((string animal) => OnAnimalChange(animal, house))" Value="@house.Animal"
+                                     ValueExpression="@(() =>  @house.Animal)">
+                            <option value="">Välj djur</option>
+                            @foreach (var animal in Animals)
+                            {
+                                <option value="@animal">@animal</option>
+                            }
+                        </InputSelect>
+                    </div>
+                    <div class="row my-2">
+                        <InputSelect ValueChanged="@((string team) => OnTeamChange(team, house))" Value="@house.Team"
+                                     ValueExpression="@(() =>  @house.Team)">
+                            <option value="">Välj lag</option>
+                            @foreach (var team in Teams)
+                            {
+                                <option value="@team">@team</option>
+                            }
+                        </InputSelect>
+                    </div>
+                </div>
+            }
+        </div>
+    </div>
+</div>
+
+@code {
+    public List<string> Colors = new List<string>()
+    {
+        "Blå",
+        "Grön",
+        "Röd",
+        "Vit",
+        "Gul"
+    };
+    public List<string> Persons = new List<string>()
+    {
+        "Mamma",
+        "Jennie",
+        "Julia",
+        "Pontus",
+        "Tobias"
+    };
+    public List<string> Drinks = new List<string>()
+    {
+        "Öl",
+        "Kaffe",
+        "Mjölk",
+        "Te",
+        "Vatten"
+    };
+    public List<string> Animals = new List<string>()
+    {
+        "Hund",
+        "Katt",
+        "Häst",
+        "Fisk",
+        "Kanin"
+    };
+    public List<string> Teams = new List<string>()
+    {
+        "Halmstad",
+        "Hammarby",
+        "Malmö FF",
+        "Västerås",
+        "Öster"
+    };
+    public List<House> Houses = new List<House>()
+    {
+        new House("Hus #1"),
+        new House("Hus #2"),
+        new House("Hus #3"),
+        new House("Hus #4"),
+        new House("Hus #5")
+    };
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        // Load data
+        for (int i = Houses.Count - 1; i >= 0; i--)
+        {
+            House? house = await _localstorage.GetItemAsync<House>(Houses[i].Name);
+            if (house != null)
+            {
+                Houses[i] = house;
+            }
+        }
+
+        StateHasChanged();
+    }
+
+    private void OnColorChange(string color, House house)
+    {
+        house.Color = color;
+        StoreItem(house);
+    }
+    private void OnPersonChange(string person, House house)
+    {
+        house.Person = person;
+        StoreItem(house);
+    }
+
+    private void OnDrinkChange(string drink, House house)
+    {
+        house.Drink = drink;
+        StoreItem(house);
+    }
+
+    private void OnAnimalChange(string animal, House house)
+    {
+        house.Animal = animal;
+        StoreItem(house);
+    }
+
+    private void OnTeamChange(string team, House house)
+    {
+        house.Team = team;
+        StoreItem(house);
+    }
+
+    public void StoreItem(House house)
+    {
+        _localstorage.SetItemAsync(house.Name, house);
+        Validate();
+    }
+
+    private void Validate()
+    {
+        bool house1 = IsHouseCorrect();
+    }
+
+    private bool IsHouseCorrect()
+    {
+        bool isCorrect = false;
+
+        return isCorrect;
+    }
+
+    public class House
+    {
+        public string Name { get; set; }
+
+        public string? Color { get; set; }
+        public string? Person { get; set; }
+        public string? Drink { get; set; }
+        public string? Animal { get; set; }
+        public string? Team { get; set; }
+
+        public House(string name)
+        {
+            Name = name;
+        }
+    }
+}
