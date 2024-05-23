@@ -1,4 +1,4 @@
-﻿@using static Blazor_gh.Pages.Home
+@using static Blazor_gh.Pages.Home
 @inject ILocalStorageService _localstorage;
 @inject NavigationManager NavManager;
 
@@ -41,7 +41,7 @@
         _showError = false;
         if (_userInput.TrimEnd().ToLower() == "event")
         {
-            _localstorage.SetItemAsync("Mode", Mode.HouseRiddle);
+            //_localstorage.SetItemAsync("Mode", Mode.HouseRiddle);
             NavManager.NavigateTo("/", true);
         }
         else
