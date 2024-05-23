@@ -33,7 +33,6 @@
 </div>
 
 @code {
-    private bool _isLoggedIn = false;
     private bool _showError = false;
     private string _userInput = "";
 
@@ -42,7 +41,6 @@
         _showError = false;
         if (_userInput.TrimEnd().ToLower() == "event")
         {
-            _isLoggedIn = true;
             _localstorage.SetItemAsync("Mode", Mode.HouseRiddle);
             NavManager.NavigateTo("/", true);
         }
