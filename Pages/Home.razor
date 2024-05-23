@@ -1,4 +1,4 @@
-﻿@page "/"
+@page "/"
 @inject ILocalStorageService _localstorage;
 
 <PageTitle>Kaj 70 år</PageTitle>
@@ -26,7 +26,7 @@
     {
         if (firstRender)
         {
-            var mode = await _localstorage.GetItemAsync<Mode?>("Mode");
+            var mode = null;//await _localstorage.GetItemAsync<Mode?>("Mode");
             if (mode != null)
             {
                 _mode = mode.Value;
