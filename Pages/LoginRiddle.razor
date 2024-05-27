@@ -1,5 +1,5 @@
 @using static Blazor_gh.Pages.Home
-@inject NavigationManager NavManager;
+@inject ILocalStorageService LocalStorage
 
 <div class="d-flex flex-column min-vh-100 min-vw-100">
     <div class="d-flex flex-grow-1 justify-content-center align-items-center">
@@ -32,16 +32,20 @@
 </div>
 
 @code {
+
+    [Parameter]
+    public EventCallback<Mode> NotifyParent { get; set; }
+
     private bool _showError = false;
     private string _userInput = "";
 
-    private void LogIn()
+    private async Task LogIn()
     {
         _showError = false;
         if (_userInput.TrimEnd().ToLower() == "event")
         {
-            //_localstorage.SetItemAsync("Mode", Mode.HouseRiddle);
-            NavManager.NavigateTo("/", true);
+            await LocalStorage.SetItemAsync("Mode", Mode.HouseRiddle);
+            await NotifyParent.InvokeAsync(Mode.HouseRiddle);
         }
         else
         {

@@ -1,12 +1,12 @@
 @page "/"
-
+@inject ILocalStorageService LocalStorage
 
 <PageTitle>Kaj 70 år</PageTitle>
 
 <div>
     @if (_mode == Mode.LoginRiddle)
     {
-        <LoginRiddle></LoginRiddle>
+        <LoginRiddle NotifyParent="OnModeChanged"></LoginRiddle>
     }
     else if (_mode == Mode.HouseRiddle)
     {
@@ -26,13 +26,19 @@
     {
         if (firstRender)
         {
-            //var mode = null;//await _localstorage.GetItemAsync<Mode?>("Mode");
-            //if (mode != null)
+            var mode = await LocalStorage.GetItemAsync<Mode?>("Mode");
+            if (mode != null)
             {
-                //mode = mode.Value;
+                _mode = mode.Value;
             }
 
             StateHasChanged();
         }
+    }
+
+    private void OnModeChanged(Mode mode)
+    {
+        _mode = mode;
+        StateHasChanged();
     }
 }

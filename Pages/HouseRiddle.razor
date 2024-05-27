@@ -1,4 +1,5 @@
-
+@using static Blazor_gh.Pages.Home
+@inject ILocalStorageService LocalStorage
 
 <div class="container py-3 my-3">
     <h1>Vem håller på Öster?</h1>
@@ -141,19 +142,25 @@
         new House("Hus #5")
     };
 
+    [Parameter]
+    public EventCallback<Mode> NotifyParent { get; set; }
+
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {
-        // Load data
-        for (int i = Houses.Count - 1; i >= 0; i--)
+        if (firstRender)
         {
-            House? house = null;//await _localstorage.GetItemAsync<House>(Houses[i].Name);
-            if (house != null)
+            // Load data
+            for (int i = Houses.Count - 1; i >= 0; i--)
             {
-                Houses[i] = house;
+                House? house = await LocalStorage.GetItemAsync<House>(Houses[i].Name);
+                if (house != null)
+                {
+                    Houses[i] = house;
+                }
             }
-        }
 
-        StateHasChanged();
+            StateHasChanged();
+        }
     }
 
     private void OnColorChange(string color, House house)
@@ -185,9 +192,9 @@
         StoreItem(house);
     }
 
-    public void StoreItem(House house)
+    public async void StoreItem(House house)
     {
-        //localstorage.SetItemAsync(house.Name, house);
+        await LocalStorage.SetItemAsync(house.Name, house);
         Validate();
     }
 
