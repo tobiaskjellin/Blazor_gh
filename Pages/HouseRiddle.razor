@@ -196,7 +196,7 @@
     {
         await LocalStorage.SetItemAsync(house.Name, house);
 
-        if (house.Name == "Hus #4" && house.Drink == "Tobias")
+        if (house.Name == "Hus #4" && house.Person == "Tobias")
         {
             await NotifyParent.InvokeAsync();
         }
