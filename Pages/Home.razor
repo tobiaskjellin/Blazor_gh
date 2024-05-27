@@ -4,13 +4,17 @@
 <PageTitle>Kaj 70 år</PageTitle>
 
 <div>
-    @if (_mode == Mode.LoginRiddle)
+    @if (_mode == Mode.HouseLogin)
     {
-        <LoginRiddle NotifyParent="OnModeChanged"></LoginRiddle>
+        <LoginRiddle NotifyParent="OnTaskComplete" Code="event"></LoginRiddle>
     }
     else if (_mode == Mode.HouseRiddle)
     {
-        <HouseRiddle></HouseRiddle>
+        <HouseRiddle NotifyParent="OnTaskComplete"></HouseRiddle>
+    }
+    else if (_mode == Mode.NextLogin)
+    {
+        <LoginRiddle NotifyParent="OnTaskComplete" Code="test"></LoginRiddle>
     }
     else
     {
@@ -19,8 +23,8 @@
 </div>
 
 @code {
-    public enum Mode { LoginRiddle, HouseRiddle, NextRiddle }
-    private Mode _mode = Mode.LoginRiddle;
+    public enum Mode { HouseLogin, HouseRiddle, NextLogin, NextRiddle }
+    private Mode _mode = Mode.HouseLogin;
 
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {
@@ -30,15 +34,15 @@
             if (mode != null)
             {
                 _mode = mode.Value;
+                StateHasChanged();
             }
-
-            StateHasChanged();
         }
     }
 
-    private void OnModeChanged(Mode mode)
+    private async Task OnTaskComplete()
     {
-        _mode = mode;
+        _mode++;
+        await LocalStorage.SetItemAsync("Mode", _mode);
         StateHasChanged();
     }
 }

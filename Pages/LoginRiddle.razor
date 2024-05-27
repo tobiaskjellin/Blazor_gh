@@ -1,51 +1,63 @@
 @using static Blazor_gh.Pages.Home
 @inject ILocalStorageService LocalStorage
 
-<div class="d-flex flex-column min-vh-100 min-vw-100">
-    <div class="d-flex flex-grow-1 justify-content-center align-items-center">
-        <div class="container d-flex p-2">
-            <div class="col-4"></div>
-            <div class="col-4">
-                <div class="row">
-                    <span>Ange Lösenord</span>
-                </div>
-                <div class="row my-2">
-                    <InputText id="test" title="test" @bind-Value="_userInput"></InputText>
-                </div>
-                <div class="row my-2">
-                    <button @onclick="LogIn">Logga in</button>
-                </div>
-                <div class="row my-2">
-                    @if (_showError)
-                    {
-                        <span style="color:red">Fel lösenord!</span>
-                    }
-                    else
-                    {
-                        <span>&nbsp</span>
-                    }
+<section class="vh-100 gradient-custom">
+    <div class="container py-5 h-100">
+        <div class="row d-flex justify-content-center align-items-center h-100">
+            <div class="col-12 col-md-8 col-lg-6 col-xl-5">
+                <div class="card bg-dark text-white" style="border-radius: 1rem;">
+                    <div class="card-body p-5 text-center">
+
+                        <div class="mb-md-5 mt-md-4 pb-5">
+
+                            <h2 class="fw-bold mb-2 text-uppercase">Kaj 70 år</h2>
+                            <p class="text-white-50 mb-5">Ange kod för att få tillgång till nästa uppdrag!</p>
+
+                            <div data-mdb-input-init class="form-outline form-white mb-4">
+                                <InputText type="password" id="typePasswordX" class="form-control form-control-lg" @bind-Value="_userInput"></InputText>
+                                <label class="form-label" for="typePasswordX">Ange kod</label>
+                            </div>
+
+                            <button data-mdb-button-init data-mdb-ripple-init class="btn btn-outline-light btn-lg px-5" @onclick="LogIn">Logga in</button>
+                        </div>
+
+                        <div>
+                            <p class="mb-0">
+                                @if (_showError)
+                                {
+                                    <span style="color:red">Fel kod!</span>
+                                }
+                                else
+                                {
+                                    <span>&nbsp</span>
+                                }
+                            </p>
+                        </div>
+
+                    </div>
                 </div>
             </div>
-            <div class="col-4"></div>
         </div>
     </div>
-</div>
+</section>
 
 @code {
 
     [Parameter]
-    public EventCallback<Mode> NotifyParent { get; set; }
+    public EventCallback NotifyParent { get; set; }
+
+    [Parameter]
+    public required string Code { get; set; }
 
     private bool _showError = false;
-    private string _userInput = "";
+    private string _userInput = string.Empty;
 
     private async Task LogIn()
     {
         _showError = false;
-        if (_userInput.TrimEnd().ToLower() == "event")
+        if (_userInput.TrimEnd().ToLower() == Code.ToLower())
         {
-            await LocalStorage.SetItemAsync("Mode", Mode.HouseRiddle);
-            await NotifyParent.InvokeAsync(Mode.HouseRiddle);
+            await NotifyParent.InvokeAsync();
         }
         else
         {
