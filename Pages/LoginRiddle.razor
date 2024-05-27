@@ -10,7 +10,7 @@
                     <span>Ange Lösenord</span>
                 </div>
                 <div class="row my-2">
-                    <InputText @bind-Value="_userInput"></InputText>
+                    <InputText id="test" title="test" @bind-Value="_userInput"></InputText>
                 </div>
                 <div class="row my-2">
                     <button @onclick="LogIn">Logga in</button>
@@ -41,7 +41,7 @@
         if (_userInput.TrimEnd().ToLower() == "event")
         {
             //_localstorage.SetItemAsync("Mode", Mode.HouseRiddle);
-            NavManager.NavigateTo("/");
+            NavManager.NavigateTo("/", true);
         }
         else
         {
