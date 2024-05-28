@@ -6,24 +6,20 @@
 <div>
     @if (_mode == Mode.HouseLogin)
     {
-        <LoginRiddle NotifyParent="OnTaskComplete" Code="event"></LoginRiddle>
+        <LoginRiddle NotifyParent="OnTaskComplete" Title="Ange kod för att få tillgång till nästa uppdrag!" Code="event"></LoginRiddle>
     }
     else if (_mode == Mode.HouseRiddle)
     {
         <HouseRiddle NotifyParent="OnTaskComplete"></HouseRiddle>
     }
-    else if (_mode == Mode.NextLogin)
+    else if (_mode == Mode.Wait)
     {
-        <LoginRiddle NotifyParent="OnTaskComplete" Code="test"></LoginRiddle>
-    }
-    else
-    {
-        <p>Done!</p>
+        <WaitPage Title="Invänta vidare instruktioner" Image="kaj2.jpg"></WaitPage>
     }
 </div>
 
 @code {
-    public enum Mode { HouseLogin, HouseRiddle, NextLogin, NextRiddle }
+    public enum Mode { HouseLogin, HouseRiddle, Wait }
     private Mode _mode = Mode.HouseLogin;
 
     protected override async Task OnAfterRenderAsync(bool firstRender)
