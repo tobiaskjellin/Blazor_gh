@@ -4,7 +4,7 @@
 <section class="gradient-custom">
     <div class="container py-5 h-100">
         <div class="row d-flex justify-content-center align-items-center h-100">
-            <div class="col-12 col-md-8 col-lg-6 col-xl-5">
+            <div class="col-12 col-md-8 col-lg-8 col-xl-8">
                 <div class="card bg-dark text-white" style="border-radius: 1rem;">
                     <div class="card-body p-5 text-center">
                         <div class="mb-md-5 mt-md-4 pb-5">
@@ -12,26 +12,53 @@
                             <p class="text-white-50 mb-5">
                                 Det finns fem hus i olika färg bredvid varandra.<br />
                                 I varje hus bor en familjemedlem till dig, varje person har en unik favoritdryck, favoritdjur och favoritlag.<br />
-                                Använd papper och penna eller fälten nedan för att svara på frågan:<br />
-                                <strong>Vem håller på Öster?</strong>
+                                <strong>Fyll i fälten nedan för att ta reda på vem som håller på Öster?</strong>
                             </p>
                             <ul style="text-align:left">
+                                @*
+                                The Brit lives in the Red house.
+                                The Swede keeps Dogs as pets.
+                                The Dane drinks Tea.
+                                The Green house is exactly to the left of the White house.
+                                The owner of the Green house drinks Coffee.
+                                The person who smokes Pall Mall rears Birds.
+                                The owner of the Yellow house smokes Dunhill.
+                                The man living in the centre house drinks Milk.
+                                The Norwegian lives in the first house.
+
+                                The man who smokes Blends lives next to the one who keeps Cats.
+                                The man who keeps Horses lives next to the man who smokes Dunhill.
+                                The man who smokes Blue Master drinks Beer.
+                                The German smokes Prince.
+                                The Norwegian lives next to the Blue house.
+                                The man who smokes Blends has a neighbour who drinks Water.
+                                *@
+
                                 <li>Mamma bor i det röda huset.</li>
-                                <li>Julia håller på Malmö FF.</li>
+                                <li>Tobias håller på Malmö FF.</li>
                                 <li>Jennie dricker te.</li>
                                 <li>Det gröna huset är precis till vänster om det vita huset.</li>
                                 <li>Ägaren av det gröna huset dricker kaffe.</li>
-                                <li>Personen som har fiskar håller på Halmstad BK.</li>
-                                <li>Ägaren av det gula huset har häst.</li>
+                                <li>Personen som har hästar håller på Halmstad BK.</li>
+                                <li>Ägaren av det gula huset har hund.</li>
                                 <li>Den som bor i huset i mitten dricker mjölk.</li>
                                 <li>Pontus bor i det första huset.</li>
-                                <li>Den som har hund bor bredvid den som håller på Hammarby.</li>
-                                <li>Den som håller på Västerås bor bredvid den som har häst.</li>
+                                <li>Den som har fåglar bor bredvid den som håller på Hammarby.</li>
+                                <li>Den som håller på Västerås bor bredvid den som har hund.</li>
                                 <li>Den som har en katt dricker öl.</li>
-                                <li>Tobbe har en kanin.</li>
+                                <li>Julia har massa fiskar i sitt akvarium.</li>
                                 <li>Pontus bor bredvid det blå huset.</li>
-                                <li>Den som har en hund har en granne som dricker vatten.</li>
+                                <li>Den som har fåglar har en granne som dricker vatten.</li>
                             </ul>
+
+                            <div>
+                                @foreach (var item in Houses)
+                                {
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" fill="currentColor" class="bi bi-house-door" viewBox="0 0 16 16" style="padding:4px">
+                                        <path d="M8.354 1.146a.5.5 0 0 0-.708 0l-6 6A.5.5 0 0 0 1.5 7.5v7a.5.5 0 0 0 .5.5h4.5a.5.5 0 0 0 .5-.5v-4h2v4a.5.5 0 0 0 .5.5H14a.5.5 0 0 0 .5-.5v-7a.5.5 0 0 0-.146-.354L13 5.793V2.5a.5.5 0 0 0-.5-.5h-1a.5.5 0 0 0-.5.5v1.293zM2.5 14V7.707l5.5-5.5 5.5 5.5V14H10v-4a.5.5 0 0 0-.5-.5h-3a.5.5 0 0 0-.5.5v4z" />
+                                    </svg>
+                                }
+                            </div>
 
                             <div data-mdb-input-init class="form-outline form-white mb-4">
                                 @foreach (var house in Houses)
@@ -71,22 +98,22 @@
                                             </InputSelect>
                                         </div>
                                         <div class="row my-2">
-                                            <InputSelect class="form-select bg-dark text-white" ValueChanged="@((string animal) => OnAnimalChange(animal, house))" Value="@house.Animal"
-                                                         ValueExpression="@(() =>  @house.Animal)">
-                                                <option value="">Välj djur</option>
-                                                @foreach (var animal in Animals)
-                                                {
-                                                    <option value="@animal">@animal</option>
-                                                }
-                                            </InputSelect>
-                                        </div>
-                                        <div class="row my-2">
                                             <InputSelect class="form-select bg-dark text-white" ValueChanged="@((string team) => OnTeamChange(team, house))" Value="@house.Team"
                                                          ValueExpression="@(() =>  @house.Team)">
                                                 <option value="">Välj lag</option>
                                                 @foreach (var team in Teams)
                                                 {
                                                     <option value="@team">@team</option>
+                                                }
+                                            </InputSelect>
+                                        </div>
+                                        <div class="row my-2">
+                                            <InputSelect class="form-select bg-dark text-white" ValueChanged="@((string animal) => OnAnimalChange(animal, house))" Value="@house.Animal"
+                                                         ValueExpression="@(() =>  @house.Animal)">
+                                                <option value="">Välj djur</option>
+                                                @foreach (var animal in Animals)
+                                                {
+                                                    <option value="@animal">@animal</option>
                                                 }
                                             </InputSelect>
                                         </div>
@@ -128,11 +155,11 @@
     };
     public List<string> Persons = new List<string>()
     {
-        "Mamma",
-        "Jennie",
-        "Julia",
-        "Pontus",
-        "Tobias"
+        "Mamma",  // brit
+        "Jennie", // dane
+        "Julia",  // german
+        "Pontus", // norwegian
+        "Tobias"  // swede
     };
     public List<string> Drinks = new List<string>()
     {
@@ -142,21 +169,21 @@
         "Te",
         "Vatten"
     };
-    public List<string> Animals = new List<string>()
+    public List<string> Animals = new List<string>() // Old Cigarette
     {
-        "Hund",
-        "Katt",
-        "Häst",
-        "Fisk",
-        "Kanin"
+        "Fågel", // blend
+        "Katt",  // blue master
+        "Hund",  // dunhill
+        "Häst",  // pall mall
+        "Fisk"   // prince
     };
-    public List<string> Teams = new List<string>()
+    public List<string> Teams = new List<string>() // Old PET
     {
-        "Halmstad BK",
-        "Hammarby IF",
-        "Malmö FF",
-        "Västerås SK",
-        "Östers IF"
+        "Halmstad BK",  // Birds
+        "Hammarby IF",  // Cat
+        "Malmö FF",     // Dog
+        "Västerås SK",  // Horse
+        "Östers IF"     // Fish
     };
     public List<House> Houses = new List<House>()
     {
@@ -195,6 +222,7 @@
         house.Color = color;
         StoreItem(house);
     }
+
     private void OnPersonChange(string person, House house)
     {
         house.Person = person;
@@ -228,13 +256,13 @@
     {
         var house1 = Houses[0];
 
-        bool isHouse1Valid = IsHouseValid(Houses[0], "Röd", "Tobias", "Öl", "Katt", "Malmö FF");
-        bool isHouse2Valid = IsHouseValid(Houses[1], "", "", "", "", "");
-        bool isHouse3Valid = IsHouseValid(Houses[2], "", "", "", "", "");
-        bool isHouse4Valid = IsHouseValid(Houses[3], "", "", "", "", "");
-        bool isHouse5Valid = IsHouseValid(Houses[4], "", "", "", "", "");
+        bool isHouse1Valid = IsHouseValid(Houses[0], "Gul", "Pontus", "Vatten", "Hund", "Hammarby IF");
+        bool isHouse2Valid = IsHouseValid(Houses[1], "Blå", "Jennie", "Te", "Fågel", "Västerås SK");
+        bool isHouse3Valid = IsHouseValid(Houses[2], "Röd", "Mamma", "Mjölk", "Häst", "Halmstad BK");
+        bool isHouse4Valid = IsHouseValid(Houses[3], "Grön", "Julia", "Kaffe", "Fisk", "Östers IF");
+        bool isHouse5Valid = IsHouseValid(Houses[4], "Vit", "Tobias", "Öl", "Katt", "Malmö FF");
 
-        if (isHouse1Valid)// && isHouse2Valid && isHouse3Valid && isHouse4Valid && isHouse5Valid)
+        if (isHouse1Valid && isHouse2Valid && isHouse3Valid && isHouse4Valid && isHouse5Valid)
         {
             await NotifyParent.InvokeAsync();
         }
